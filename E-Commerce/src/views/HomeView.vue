@@ -17,9 +17,9 @@ export default {
   },
   setup() {
     const productStore = useProductStore()
-    
+
     return {
-      productStore, 
+      productStore,
     }
   },
   async mounted() {
@@ -32,45 +32,46 @@ export default {
 
 <template>
   <div class="app">
-    <MenuItemComponents/>
-    <MenuComponent title="Featured Categories"/>
+    <MenuItemComponents :is-home-page="true" />
+    <MenuComponent title="Featured Categories" />
     <div class="category-wrapper">
-      <CategoryComponent v-for="category in productStore.categories" :key="category['id']" :title="category['name']"
-        :product-count="category['productCount']" :container-color="category['color']"
-        :image="'http://localhost:3000/' + category['image']" />
+      <router-link 
+            v-for="category in productStore.categories" 
+            :key="category['id']"
+            :to="{ name: 'Category', params: { categoryId: category.id } }" 
+            style="text-decoration: none;"
+        >
+        <CategoryComponent :title="category['name']" :product-count="category['productCount']"
+          :container-color="category['color']" :image="'http://localhost:3000/' + category['image']" />
+    </router-link>
     </div>
     <div class="promotion-wrapper">
       <PromotionComponent v-for="promotion in productStore.promotions" :key="promotion['id']"
         :title="promotion['title']" :image="'http://localhost:3000/' + promotion['image']"
         :container-color="promotion['color']" :button-color="promotion['buttonColor']" />
     </div>
-    <MenuComponent title="Popular Product"/>
+    <MenuComponent title="Popular Product" />
     <div class="product-wrapper">
-      <ProductComponent v-for="product in productStore.getProductsWithBadges" 
-    :key="product.id"
-    :badge="product.badge"             
-    :name="product.name"               
-    :group="product.group"             
-    :price="product.price"             
-    :size="product.size"
-    :rating-count="product.rating"     
-    :image="'http://localhost:3000/' + product.image"
-    :discount-as-percentage="product.promotionAsPercentage"
-      />
+      <ProductComponent v-for="product in productStore.getProductsWithBadges" :key="product.id" :badge="product.badge"
+        :name="product.name" :group="product.group" :price="product.price" :size="product.size"
+        :rating-count="product.rating" :image="'http://localhost:3000/' + product.image"
+        :discount-as-percentage="product.promotionAsPercentage" />
     </div>
   </div>
 </template>
 
 <style scoped>
-.app{
-  padding: 10px;
+.app {
+  padding: 8px;
+  min-width: 1628px;
 }
 
 .category-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 17.5px;
   justify-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .promotion-wrapper {

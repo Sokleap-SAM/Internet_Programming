@@ -44,7 +44,10 @@ export const useProductStore = defineStore('product', {
     },
     getPopularProducts: (state) => {
       return state.products.filter((product) => product.countSold >= 10)
-    }
+    },
+    getCategoryById: (state) => {
+      return (id) => state.categories.find(category => category.id === id)
+    },
   },
   actions: {
     async fetchCategories() {

@@ -1,28 +1,34 @@
 <template>
     <div class="container">
         <select class="select">
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
+            <option value="option1">All Categories</option>
         </select>
-        <div>|</div>
+        |
         <div class="search-block">
             <input class="input-text" type="text" placeholder="Search for items" />
-            <div>&#128269;</div>
+            <button class="search-button">
+                <img :src="searchIcon" />
+            </button>
         </div>
     </div>
 </template>
 
 <script>
+import searchIcon from '@/assets/search_icon.svg'
 export default {
+    data() {
+        return {
+            searchIcon
+        }
+    },
     name: 'SearchBoxComponent',
 }
 </script>
 
 <style scoped>
 .container {
-    width: auto;
-    margin-left: 30px;
+    width: 700px;
+    margin-left: auto;
     padding: 20px;
     border-radius: 5px;
     border: 2px solid #BCE3C9;
@@ -33,20 +39,21 @@ export default {
 }
 
 .select {
-  margin-right: 20px;
-  background-color: transparent;
-  color: #253D4E;
-  border: none;
-  font-size: 14px;
-  font-family: 'Quicksand', sans-serif;
-  cursor: pointer;
+    margin-right: 10px;
+    background-color: transparent;
+    color: #253D4E;
+    border: none;
+    font-size: 14px;
+    font-family: 'Quicksand', sans-serif;
+    cursor: pointer;
 }
 
 .search-block {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 .input-text {
@@ -55,6 +62,11 @@ export default {
     color: #B6B6B6;
     background-color: transparent;
     border: none;
-    margin: 0 20px;
+    margin-left: 10px;
+}
+
+.search-button {
+    background-color: transparent;
+    border: none;
 }
 </style>

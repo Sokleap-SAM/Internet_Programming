@@ -66,7 +66,6 @@ export default {
         currentPrice() {
             const multiplier = 1 - (this.discountAsPercentage / 100);
             const discountedPrice = this.price * multiplier;
-            console.log(discountedPrice);
             return `$${discountedPrice.toFixed(2)}`;
         },
         originalPriceFormatted() {
