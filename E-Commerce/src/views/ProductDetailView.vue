@@ -61,7 +61,6 @@ export default {
                 { id: 'additional', label: 'Additional Info' },
                 { id: 'reviews', label: 'Reviews (5)' }
             ],
-            isLoading: true,
         };
     },
     methods: {
@@ -85,7 +84,6 @@ export default {
     },
     async mounted() {
         await this.productStore.fetchProducts();
-        this.isLoading = false;
     },
 }
 </script>
