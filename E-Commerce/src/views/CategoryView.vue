@@ -22,7 +22,6 @@ export default {
         const route = useRoute();
         const categoryId = parseInt(route.params.categoryId);
 
-        // Use computed property instead of method
         const categoryName = computed(() => {
             const category = productStore.getCategoryById(categoryId);
             return category ? category.name : 'All Categories';
@@ -34,7 +33,6 @@ export default {
     },
     async mounted() {
         await this.productStore.fetchCategories(); 
-        window.scrollTo(0, 0);
     },
 }
 </script>

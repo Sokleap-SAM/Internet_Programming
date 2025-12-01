@@ -52,10 +52,17 @@ export default {
     </div>
     <MenuComponent title="Popular Product" />
     <div class="product-wrapper">
-      <ProductComponent v-for="product in productStore.getProductsWithBadges" :key="product.id" :badge="product.badge"
+      <router-link 
+            v-for="product in productStore.getProductsWithBadges" 
+            :key="product['id']"
+            :to="{ name: 'ProductDetail', params: { productId: product.id } }" 
+            style="text-decoration: none;"
+        >
+      <ProductComponent :badge="product.badge"
         :name="product.name" :group="product.group" :price="product.price" :size="product.size"
         :rating-count="product.rating" :image="'http://localhost:3000/' + product.image"
         :discount-as-percentage="product.promotionAsPercentage" />
+      </router-link>
     </div>
   </div>
 </template>
@@ -84,7 +91,7 @@ export default {
 .product-wrapper {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 18px;
   flex-wrap: wrap;
 }
 </style>

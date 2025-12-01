@@ -14,7 +14,7 @@
                 <span v-for="index in 5" :key="index" class="star" :class="{ filled: index <= ratingCount }">
                     ★
                 </span>
-                <span class="rating-text">({{ ratingCount.toFixed(1) }})</span>
+                <span class="rating-text">({{ ratingCount }})</span>
             </div>
             <h3 class="size">{{ size }}</h3>
             <div class="product-footer">
@@ -39,7 +39,7 @@ export default {
             required: true,
         },
         ratingCount: {
-            type: Number,
+            type: [Number, String],
             required: true,
         },
         image: {

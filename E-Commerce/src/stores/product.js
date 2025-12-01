@@ -13,19 +13,19 @@ export const useProductStore = defineStore('product', {
       return state.products.map(product => {
         let badgeString = '';
 
-        if(product.promotionAsPercentage > 15){
+        if (product.promotionAsPercentage > 15) {
           badgeString = `-${product.promotionAsPercentage}%`;
-        } else if(product.countSold >= 1000){
+        } else if (product.countSold >= 1000) {
           badgeString = 'Hot';
-        } else if(product.countSold >= 500){
+        } else if (product.countSold >= 500) {
           badgeString = 'Sale';
-        } 
+        }
 
         let imagePath = product.image;
         const parsed = JSON.parse(imagePath)
         imagePath = Array.isArray(parsed) ? parsed[0] : imagePath
         imagePath = imagePath.replace(/\\\\/g, '/')
-        
+
         return {
           ...product,
           badge: badgeString,
@@ -48,6 +48,21 @@ export const useProductStore = defineStore('product', {
     getCategoryById: (state) => {
       return (id) => state.categories.find(category => category.id === id)
     },
+    getProductById: (state) => {
+      return (id) => {
+        const product = state.products.find(p => p.id === id);
+        if (!product) return null;
+        let imagePath = product.image;
+        const parsed = JSON.parse(imagePath);
+        imagePath = Array.isArray(parsed) ? parsed[0] : imagePath;
+        imagePath = imagePath.replace(/\\\\/g, '/');
+
+        return {
+          ...product,
+          image: imagePath 
+        };
+      }
+    }
   },
   actions: {
     async fetchCategories() {
@@ -60,7 +75,7 @@ export const useProductStore = defineStore('product', {
       const response = await axios.get('http://localhost:3000/api/products').then((res) => {
         this.products = res.data
       })
-        return response
+      return response
     },
     async fetchGroups() {
       const response = await axios.get('http://localhost:3000/api/groups').then((res) => {

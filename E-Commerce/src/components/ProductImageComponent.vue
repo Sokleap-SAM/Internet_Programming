@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import mangoImage from '@/assets/mango.jpg'
+// import mangoImage from '@/assets/mango.jpg'
 import orangeImage from '@/assets/orange.png'
 import paperImage from '@/assets/paper.png'
 import starwberryImage from '@/assets/strawberry.png'
@@ -29,7 +29,7 @@ export default {
     name: 'ProductImageComponent',
     data() {
         return {
-            mainImage: mangoImage,
+            mainImage: null,
             thumbnails: [
                 orangeImage,
                 paperImage,
@@ -51,6 +51,16 @@ export default {
             const currentIndex = this.thumbnails.indexOf(this.mainImage);
             const prevIndex = (currentIndex - 1 + this.thumbnails.length) % this.thumbnails.length;
             this.setMainImage(this.thumbnails[prevIndex]);
+        }
+    },
+    mounted() {
+        if (this.image) {
+            this.mainImage = this.image;
+        }
+    },
+    props: {
+        image: {
+            required: true,
         }
     }
 }

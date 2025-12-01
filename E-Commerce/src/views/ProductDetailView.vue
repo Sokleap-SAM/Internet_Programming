@@ -1,5 +1,5 @@
 <template>
-    <div class="app">
+    <div class="app"  v-if="product">
         <MenuItemComponents />
         <div class="breadcrumbs">
             <span>
@@ -15,8 +15,8 @@
             </span>
         </div>
         <div class="product-details">
-            <ProductImageComponent />
-            <ProductDetailComponent />
+            <ProductImageComponent :image="'http://localhost:3000/' + product.image" />
+            <ProductDetailComponent :name="product.name" :rating-count="product.rating" :price="product.price" :discount-as-percentage="product.promotionAsPercentage" :instock="product.instock" />
         </div>
         <div class="footer">
             <div class="tabs-navigation">
@@ -43,6 +43,9 @@
 import MenuItemComponents from '@/components/MenuItemComponents.vue';
 import ProductImageComponent from '@/components/ProductImageComponent.vue';
 import ProductDetailComponent from '@/components/ProductDetailComponent.vue';
+import { useRoute } from 'vue-router';
+import { useProductStore } from '@/stores/product';
+import { computed } from 'vue';
 export default {
     name: 'ProductDetailView',
     components: {
@@ -57,14 +60,33 @@ export default {
                 { id: 'description', label: 'Description' },
                 { id: 'additional', label: 'Additional Info' },
                 { id: 'reviews', label: 'Reviews (5)' }
-            ]
+            ],
+            isLoading: true,
         };
     },
     methods: {
         changeTab(tabId) {
             this.currentTab = tabId;
         }
-    }
+    },
+    setup() {
+        const productStore = useProductStore()
+        const route = useRoute();
+        const productID = parseInt(route.params.productId);
+
+        const product = computed(() => {
+            const p = productStore.getProductById(productID);
+            return p;
+        });
+        return {
+            productStore,
+            product,
+        }
+    },
+    async mounted() {
+        await this.productStore.fetchProducts();
+        this.isLoading = false;
+    },
 }
 </script>
 

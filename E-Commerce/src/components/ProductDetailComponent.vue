@@ -1,20 +1,20 @@
 <template>
     <div class="container">
-        <div class="tag">
-            In Stock
+        <div class="tag" :class="instock > 1000 ? 'in-stock' : 'out-of-stock'">
+            {{ stockStatus }}
         </div>
         <div class="title">
-            Seeds of Change Organic Quinoa, Brown
+            {{ name }}
         </div>
         <div class="rating">
-            <span v-for="index in 5" :key="index" class="star" :class="{ filled: index <= 5 }">
+            <span v-for="index in 5" :key="index" class="star" :class="{ filled: index <= ratingCount }">
                 ★
             </span>
-            <span class="rating-text">(5)</span>
+            <span class="rating-text">({{ ratingCount.toFixed(1) }})</span>
         </div>
         <div class="price">
-            <div class="current-price">$38</div>
-            <div class="original-price">$42</div>
+            <div class="current-price">{{ currentPrice }}</div>
+            <div class="original-price">{{ originalPriceFormatted }}</div>
         </div>
         <div class="description">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima
@@ -68,6 +68,41 @@
 <script>
 export default {
     name: 'ProductDetailComponent',
+    props: {
+        name: {
+            type: String,
+            required: true,
+        },
+        ratingCount: {
+            type: [Number, String],
+            required: true,
+        },
+        price: {
+            type: Number,
+            required: true,
+        },
+        discountAsPercentage: {
+            type: Number,
+            required: true,
+        },
+        instock: {
+            type: Number,
+            required: true,
+        }
+    },
+    computed: {
+        currentPrice() {
+            const multiplier = 1 - (this.discountAsPercentage / 100);
+            const discountedPrice = this.price * multiplier;
+            return `$${discountedPrice.toFixed(2)}`;
+        },
+        originalPriceFormatted() {
+            return `$${this.price.toFixed(2)}`;
+        },
+        stockStatus() {
+            return this.instock > 0 ? 'In Stock' : 'Out of Stock';
+        },
+    }
 }
 </script>
 
@@ -79,14 +114,23 @@ export default {
 }
 
 .tag {
-    padding: 5px 30px 5px 10px;
-    max-width: 100px;
-    color: #3BB77E;
-    background: #DEF9EC;
+    padding: 5px 0px 5px 10px;
+    max-width: 110px;
     font-family: 'Quicksand', sans-serif;
     font-size: 14px;
     font-weight: bold;
     border-radius: 4px;
+    display: inline-block;
+}
+
+.in-stock {
+    color: #3BB77E; 
+    background: #DEF9EC;
+}
+
+.out-of-stock {
+    color: orangered; 
+    background: #F2DEDE;
 }
 
 .title {
