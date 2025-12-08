@@ -10,34 +10,38 @@ export default {
     goPage2() {
       this.$router.push({
         path: '/page_two',
-        query: { message: this.getMessage }
+        query: { message: this.messageToSend }
       });
     },
     goPage3() {
       this.$router.push({
         path: '/page_three',
-        query: { message: this.getMessage }
+        query: { message: this.messageToSend }
       });
     },
     goSection(id) {
       this.sectionID = id;
       this.$router.push({
         path: `/page_one/sections/${id}`,
-        query: { message: this.getMessage }
+        query: { message: this.messageToSend }
       });
     },
     isSectionActive(id) {
       return Number(this.$route.params.sectionId) === id;
-    }
+    },
   },
   computed: {
-    message() {
+    messageFromQuery() {
       return this.$route.query.message || '';
     },
-    getMessage() {
-      const trimmedMessageInput = this.messageInput.trim();
+    messageToSend() {
+      const sectionId = this.$route.params.sectionId;
+      let trimmedMessageInput = this.messageInput.trim();
       if (trimmedMessageInput === '') {
         return '';
+      }
+      if (sectionId) {
+        return `Message from Page 1 Section ${sectionId}: ${trimmedMessageInput}`;
       }
       return "Message from Page 1: " + trimmedMessageInput;
     }
@@ -67,7 +71,7 @@ export default {
         <div>Welcome to Page 1</div>
         <router-view></router-view>
         <div class="message-display">
-          {{ message }}
+          {{ messageFromQuery }}
         </div>
         <div class="message-block">
           <div>Message:</div>
