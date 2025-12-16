@@ -3,7 +3,7 @@ import { OrdersService } from './orders.service';
 
 @Controller('orders')
 export class OrdersController {
-  constructor(private readonly ordersService: OrdersService) { }
+  constructor(private readonly ordersService: OrdersService) {}
 
   @Post()
   create(@Body() body: any) {
@@ -11,7 +11,7 @@ export class OrdersController {
   }
 
   @Delete()
-  delete(){
+  delete() {
     return this.ordersService.deleteOrder();
   }
 }
