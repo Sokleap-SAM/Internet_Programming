@@ -33,11 +33,6 @@ export class ReceiptsService {
       }),
     );
 
-    this.notifications.notify('receipts', 'receipt_created', {
-      receiptId: saved.receiptId,
-      price: saved.price,
-    });
-
     return saved;
   }
 

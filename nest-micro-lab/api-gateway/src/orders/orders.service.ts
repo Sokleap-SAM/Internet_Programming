@@ -18,10 +18,6 @@ export class OrdersService {
       createdAt: new Date().toISOString(),
     });
 
-    this.notifications.notify('Orders', 'order_created', {
-      order: orderDto,
-      createdAt: new Date().toISOString(),
-    });
     return { status: 'Order accepted', orderDto };
   }
 

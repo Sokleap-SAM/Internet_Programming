@@ -10,6 +10,8 @@ import {
 import { NotificationsService } from './notifications.service';
 import { NotificationFeatureRegistrar } from './notifications-features.registries';
 import { NotificationsRegistryModule } from './notification-registry.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { NotifyInterceptor } from './notify.interceptor';
 
 @Module({
   imports: [NotificationsRegistryModule], // ✅ registry always available
@@ -22,6 +24,10 @@ export class NotificationsModule {
       providers: [
         { provide: NOTIFICATION_OPTIONS, useValue: options },
         NotificationsService,
+        {
+          provide: APP_INTERCEPTOR,
+          useClass: NotifyInterceptor,
+        },
       ],
       exports: [NotificationsService],
     };

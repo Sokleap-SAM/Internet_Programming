@@ -37,11 +37,13 @@ export class NotificationsService {
   }
 
   notify(featureName: string, event: string, payload: any) {
-    if (!this.options.enable || !this.getFeature(featureName)?.enable) {
+    const feature = this.getFeature(featureName);
+
+    if (this.options.enable === false || feature?.enable === false) {
+      console.log(`Notification for ${featureName} was disabled`);
       return { skipped: true, reason: 'notifications disabled' };
     }
 
-    const feature = this.getFeature(featureName);
     const channels = this.resolveChannels(feature);
 
     const prefix = feature?.prefix ?? `[${featureName.toUpperCase()}]`;

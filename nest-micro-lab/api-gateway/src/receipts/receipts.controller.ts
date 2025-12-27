@@ -12,6 +12,7 @@ import { CreateReceiptDto } from './dto/create-receipt.dto';
 import { UpdateReceiptDto } from './dto/update-receipt.dto';
 import { UseGuards } from '@nestjs/common';
 import { ApiKeyGuard } from 'src/common/guards/api-key.guard';
+import { Notify } from 'src/notifications/notify.decorator';
 
 @UseGuards(ApiKeyGuard)
 @Controller('receipts')
@@ -28,6 +29,7 @@ export class ReceiptsController {
   }
 
   @Post()
+  @Notify('Receipts', 'receipt_created')
   create(@Body() dto: CreateReceiptDto) {
     return this.receiptsService.create(dto);
   }

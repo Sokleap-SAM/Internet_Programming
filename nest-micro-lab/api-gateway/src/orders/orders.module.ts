@@ -23,6 +23,7 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
       featureName: 'Orders',
       prefix: '[ORDERS]',
       channels: ['log', 'telegram'],
+      enable: true,
     }),
   ],
   controllers: [OrdersController],
