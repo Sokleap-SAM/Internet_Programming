@@ -12,7 +12,11 @@ import { NotificationsModule } from './notifications/notifications.module';
     OrdersModule,
     ReceiptsModule,
     PaymentsModule,
-    NotificationsModule,
+    NotificationsModule.forRoot({
+      appName: 'API Gateway Lab',
+      defaultChannel: 'log',
+      enable: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'postgres',

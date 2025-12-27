@@ -8,17 +8,19 @@ import { PaymentsService } from 'src/payments/payments.service';
 export class OrdersService {
   constructor(
     @Inject('ORDERS_SERVICE') private readonly client: ClientProxy,
-    private readonly paymentsService: PaymentsService,
     private readonly notifications: NotificationsService,
+    private readonly paymentsService: PaymentsService,
   ) {}
 
   createOrder(orderDto: any) {
-    // In real life we might validate or save to DB first
-    // Here we just emit an event
-    this.client.emit('order_created', '');
-    this.paymentsService.hello();
-    this.notifications.notify('order_created', {
-      message: 'hello',
+    this.client.emit('order_created', {
+      order: orderDto,
+      createdAt: new Date().toISOString(),
+    });
+
+    this.notifications.notify('Orders', 'order_created', {
+      order: orderDto,
+      createdAt: new Date().toISOString(),
     });
     return { status: 'Order accepted', orderDto };
   }

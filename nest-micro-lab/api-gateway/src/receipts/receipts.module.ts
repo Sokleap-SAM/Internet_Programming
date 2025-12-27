@@ -6,7 +6,15 @@ import { Receipt } from 'src/database/entities/receipts.entity';
 import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Receipt]), NotificationsModule],
+  imports: [
+    TypeOrmModule.forFeature([Receipt]),
+    NotificationsModule.forFeature({
+      featureName: 'Receipts',
+      prefix: '[RECEIPTS]',
+      channels: ['log'], // only log for receipts
+      enable: false,
+    }),
+  ],
   providers: [ReceiptsService],
   controllers: [ReceiptsController],
 })

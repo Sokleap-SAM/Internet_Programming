@@ -19,7 +19,11 @@ import { NotificationsModule } from 'src/notifications/notifications.module';
         },
       },
     ]),
-    forwardRef(() => NotificationsModule),
+    NotificationsModule.forFeature({
+      featureName: 'Orders',
+      prefix: '[ORDERS]',
+      channels: ['log', 'telegram'],
+    }),
   ],
   controllers: [OrdersController],
   providers: [OrdersService],
