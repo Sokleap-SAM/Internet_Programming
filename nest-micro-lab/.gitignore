@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.env
+.DS_Store
+api-gateway/node_modules/
+api-gateway/dist/
