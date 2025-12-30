@@ -3,33 +3,30 @@ import { OrdersModule } from './orders/orders.module';
 import { ReceiptsModule } from './receipts/receipts.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaymentsModule } from './payments/payments.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { DatabaseModule } from './database/database.module';
+import { CategoryModule } from './modules/category/category.module';
+import { ProductModule } from './modules/products/product.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '../.env',
+    }),
     OrdersModule,
     ReceiptsModule,
     PaymentsModule,
+    ProductModule,
+    CategoryModule,
     NotificationsModule.forRoot({
       appName: 'API Gateway Lab',
       defaultChannel: 'log',
       enable: true,
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'postgres',
-      port: 5432,
-      logging: true,
-      logger: 'advanced-console',
-      username: 'postgres',
-      password: 'postgres',
-      database: 'order-worker',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      autoLoadEntities: true,
-      synchronize: true,
-    }),
+    DatabaseModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],
