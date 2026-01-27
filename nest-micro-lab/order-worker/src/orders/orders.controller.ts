@@ -1,21 +1,45 @@
-import { Controller, Logger } from '@nestjs/common';
-import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices';
+<<<<<<< Updated upstream
+import { Body, Controller, Delete, Post } from '@nestjs/common';
+import { OrdersService } from './orders.service';
+import { Notify } from 'src/notifications/notify.decorator';
+import { VerifyCustomerPipe } from 'src/modules/customers/pipes/verify-customer.pipe';
+=======
+import { Body, Controller, Delete, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { OrdersService } from './orders.service';
+import { Notify } from 'src/notifications/notify.decorator';
+import { VerifyCustomerPipe } from 'src/modules/customers/pipes/verify-customer.pipe';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+>>>>>>> Stashed changes
 
 @Controller('orders')
 export class OrdersController {
-  private readonly logger = new Logger(OrdersController.name);
-  private readonly processedOrders: any[] = []; // simple "DB"
+  constructor(private readonly ordersService: OrdersService) {}
 
-  @EventPattern('order_created')
-  handleOrderCreated(@Payload() data: any, @Ctx() context: RmqContext) {
-    this.logger.log(`Received order_created event: ${JSON.stringify(data)}`);
-    this.processedOrders.push({
-      ...data,
-      processedAt: new Date().toISOString(),
-    });
-
-    const channel = context.getChannelRef();
-    const originalMsg = context.getMessage();
-    channel.ack(originalMsg);
+<<<<<<< Updated upstream
+=======
+  @UseGuards(JwtAuthGuard)
+>>>>>>> Stashed changes
+  @Post()
+  @Notify('Orders', 'order_created')
+  create(@Body(VerifyCustomerPipe) body: any) {
+    return this.ordersService.createOrder(body);
   }
+
+<<<<<<< Updated upstream
+=======
+  @UseGuards(JwtAuthGuard)
+>>>>>>> Stashed changes
+  @Delete()
+  delete() {
+    return this.ordersService.deleteOrder();
+  }
+<<<<<<< Updated upstream
+=======
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  list(@Req() req: any) {
+    return { user: req.user, orders: [] };
+  }
+>>>>>>> Stashed changes
 }
