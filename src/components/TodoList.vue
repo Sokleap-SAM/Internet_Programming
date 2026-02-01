@@ -19,7 +19,7 @@
 <script>
 import { mapState } from "pinia";
 import TodoItem from "./TodoItem.vue";
-import { useTodoStore } from "../stores/todo";
+import { useTodoStore } from "../stores/todo.store";
 
 export default {
   setup() {
@@ -44,16 +44,13 @@ export default {
     ...mapState(useTodoStore, ["todos", "countTodos"]),
     completedTasks() {
       if (this.todos) {
-        return this.todos.filter((todo) => todo.completedAt != null);
+        return this.todos.filter((todo) => todo.is_done);
       }
       return [];
     },
     pendingTasks() {
       if (this.todos) {
-        // if (this.todos.length > 2) {
-        //   this.todos.push({ task: "new" });
-        // }
-        return this.todos.filter((todo) => todo.completedAt == null);
+        return this.todos.filter((todo) => !todo.is_done);
       }
       return [];
     },

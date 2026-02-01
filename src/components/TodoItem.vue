@@ -1,12 +1,12 @@
 <template>
   <li class="list pending" @click="toggleStatus(todo.id)">
-    <input type="checkbox" :checked="todo.completedAt != null" />
-    <span class="task">{{ todo.name }}</span>
+    <input type="checkbox" :checked="todo.is_done" />
+    <span class="task">{{ todo.title }}</span>
     <i class="uil" :class="icon"></i>
   </li>
 </template>
 <script>
-import { useTodoStore } from "../stores/todo";
+import { useTodoStore } from "../stores/todo.store";
 export default {
   setup() {
     const todoStore = useTodoStore();

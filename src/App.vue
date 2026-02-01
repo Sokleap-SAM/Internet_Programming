@@ -11,7 +11,7 @@
         >You have <span class="pending-num"> {{ nbOfTodo }} </span> tasks
         pending.</span
       >
-      <button class="clear-button">Clear All</button>
+      <!-- <button class="clear-button">Clear All</button> -->
     </div>
   </div>
 </template>
@@ -20,14 +20,26 @@ import { mapState } from "pinia";
 import AddTodo from "./components/AddTodo.vue";
 import TodoLists from "./components/TodoList.vue";
 
-import { useTodoStore } from "./stores/todo";
+import { useTodoStore } from "./stores/todo.store";
+import { onMounted, onBeforeUnmount } from "vue";
 export default {
   name: "App",
   setup() {
     const store = useTodoStore();
-    return {
-      store,
-    };
+    let stopRealtime = null;
+
+    onMounted(async () => {
+      // Fetch initial data
+      await store.fetchTodos();
+      // Start listening for live changes via WebSocket
+      stopRealtime = store.startRealtime();
+    });
+
+    onBeforeUnmount(() => {
+      // Clean up the WebSocket connection when the app unmounts
+      if (stopRealtime) stopRealtime();
+    });
+    return { store };
   },
   components: {
     AddTodo,
@@ -39,13 +51,13 @@ export default {
     }),
   },
   methods: {
-    handleAddTodo(todo) {
-      this.store.addTodo(todo);
+    handleAddTodo(title) {
+      this.store.addTodo(title);
     },
-    clearAllTodos() {
-      console.log("clear");
-      this.store.clearAll();
-    },
+    // clearAllTodos() {
+    //   console.log("clear");
+    //   this.store.clearAll();
+    // },
   },
 };
 </script>
